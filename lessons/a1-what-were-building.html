@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What we are actually building — learning digisynth</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body class="p-a">
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">learning <span>digisynth</span></a>
+    <nav>
+      <a href="../index.html">Contents</a>
+      <a href="../glossary.html">Glossary</a>
+      <a href="../further-reading.html">Further reading</a>
+      <a href="../about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="lesson-head">
+    <p class="part">Part A · Orientation</p>
+    <h1>What we are actually building</h1>
+    <p class="steps">
+      <span class="badge status-built">Built</span>
+      &nbsp; PLAN · Context, Decisions already made
+    </p>
+  </div>
+
+  <div class="plain">
+    <span class="label">In one sentence</span>
+    <p>One program that is six complete synthesizers running at the same time, played by a rhythm
+       generator built into it, controlled by twelve knobs that spin forever, and drawn on a tablet
+       screwed to the desk.</p>
+  </div>
+
+  <h2>Why it exists</h2>
+
+  <p>
+    There is no shortage of software synthesizers. You can buy one for the price of a pizza, load it
+    into a music program, and stack five more on top. So the first honest question about this project
+    is why it should exist at all.
+  </p>
+
+  <p>
+    The answer is in one line of the plan: <em>“as many effect combinations and control as
+    desired.”</em> That is not a feature request, it is a complaint. Stacking six software synths
+    inside a host program means six windows, one mouse, and a machine that starts stuttering long
+    before you have finished patching. Everything is a menu. Nothing is a knob. And the moment you
+    want voice three to modulate voice five, you discover that the plugin format never really
+    intended those two things to know about each other.
+  </p>
+
+  <p>
+    So this is not a plugin. It is an <em>instrument</em>: a single program that owns the whole
+    machine, presents itself on a dedicated screen, and is played with your hands rather than a
+    pointer. That decision is the reason for almost every strange choice in the rest of this site.
+  </p>
+
+  <h2>The shape of the thing</h2>
+
+  <p>
+    Start with the word that will confuse you first.
+    In most synthesizers a <a class="jargon" href="../glossary.html#voice">voice</a> means one
+    sounding note — “16-voice polyphony” means sixteen notes at once. In this project a voice means
+    one of six <em>complete, independent synthesizers</em>, each of which is itself
+    <a class="jargon" href="../glossary.html#polyphony">polyphonic</a> and handles up to sixteen
+    notes of its own. Six voices, sixteen notes each. This site says <strong>voice</strong> for the
+    big thing and <strong>note</strong> for the small thing, always.
+  </p>
+
+  <p>Inside one of those six voices there is:</p>
+
+  <ul>
+    <li>three wavetable <a class="jargon" href="../glossary.html#oscillator">oscillators</a> and a
+      sampler — the parts that actually make a tone;</li>
+    <li>two <a class="jargon" href="../glossary.html#filter">filters</a> — the parts that make it
+      dull, bright, or vocal;</li>
+    <li>eighteen things that move by themselves: six envelopes, eight LFOs, four random generators —
+      plus four macro knobs;</li>
+    <li>twelve <a class="jargon" href="../glossary.html#fx">effect</a> slots, reorderable, where any
+      of the eleven effect types can go in any slot;</li>
+    <li>a six-row <a class="jargon" href="../glossary.html#mod-matrix">modulation matrix</a> for
+      wiring any of those movers to any of the several hundred controls.</li>
+  </ul>
+
+  <p>
+    Then there is a seventh section that is not a synthesizer at all. It holds the
+    <a class="jargon" href="../glossary.html#sequencer">sequencer</a> — the thing that plays notes,
+    six independent rhythm tracks, one per voice — and a second modulation matrix whose reach crosses
+    voice boundaries, so an envelope in voice one can open a filter in voice four.
+  </p>
+
+  <p>
+    There is no keyboard input. None. The sequencer is the only source of notes, and that was decided
+    deliberately rather than deferred. Nor are there presets: the plan explicitly puts them out of
+    scope, and only asks that the state stay simple enough to save later if that changes.
+  </p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 680 356" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="shapeTitle shapeDesc">
+      <title id="shapeTitle">The shape of the instrument</title>
+      <desc id="shapeDesc">A step sequencer at the top feeds six identical voice columns. Each column
+        contains three oscillators plus a sampler, two filters, twelve effect slots and a six-row
+        modulation matrix. All six columns feed a master mix at the bottom.</desc>
+
+      <defs>
+        <marker id="arw" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L8 4 L0 8 z" fill="#8b9094"/>
+        </marker>
+      </defs>
+
+      <rect x="20" y="14" width="640" height="34" rx="5" fill="#2c3033" stroke="#fff6e1" stroke-width="1.5"/>
+      <text x="340" y="36" fill="#fff6e1" font-size="13" text-anchor="middle" font-family="monospace">
+        section 7 · step sequencer — 6 Euclidean tracks + cross-voice matrix
+      </text>
+
+      <g stroke="#8b9094" stroke-width="1.4" marker-end="url(#arw)">
+        <line x1="70"  y1="48" x2="70"  y2="70"/>
+        <line x1="178" y1="48" x2="178" y2="70"/>
+        <line x1="286" y1="48" x2="286" y2="70"/>
+        <line x1="394" y1="48" x2="394" y2="70"/>
+        <line x1="502" y1="48" x2="502" y2="70"/>
+        <line x1="610" y1="48" x2="610" y2="70"/>
+      </g>
+
+      <g font-family="monospace" font-size="10" text-anchor="middle">
+        <!-- voice 1 -->
+        <rect x="20" y="72" width="100" height="200" rx="5" fill="#2c3033" stroke="#4c4f52"/>
+        <text x="70" y="90" fill="#dfdfdf" font-size="12">VOICE 1</text>
+        <rect x="28" y="98"  width="84" height="26" rx="3" fill="#1d2125" stroke="#aa88ff"/>
+        <text x="70" y="115" fill="#aa88ff">3 osc + smp</text>
+        <rect x="28" y="130" width="84" height="26" rx="3" fill="#1d2125" stroke="#ffb74d"/>
+        <text x="70" y="147" fill="#ffb74d">2 filters</text>
+        <rect x="28" y="162" width="84" height="26" rx="3" fill="#1d2125" stroke="#ff5252"/>
+        <text x="70" y="179" fill="#ff5252">12 fx slots</text>
+        <rect x="28" y="194" width="84" height="26" rx="3" fill="#1d2125" stroke="#1de9b6"/>
+        <text x="70" y="211" fill="#1de9b6">6-row matrix</text>
+        <text x="70" y="242" fill="#8b9094">16 notes</text>
+        <text x="70" y="256" fill="#8b9094">core 1</text>
+
+        <!-- voices 2..6, drawn compactly -->
+        <g>
+          <rect x="128" y="72" width="100" height="200" rx="5" fill="#2c3033" stroke="#4c4f52"/>
+          <text x="178" y="90" fill="#dfdfdf" font-size="12">VOICE 2</text>
+          <rect x="136" y="98"  width="84" height="26" rx="3" fill="#1d2125" stroke="#aa88ff"/>
+          <rect x="136" y="130" width="84" height="26" rx="3" fill="#1d2125" stroke="#ffb74d"/>
+          <rect x="136" y="162" width="84" height="26" rx="3" fill="#1d2125" stroke="#ff5252"/>
+          <rect x="136" y="194" width="84" height="26" rx="3" fill="#1d2125" stroke="#1de9b6"/>
+          <text x="178" y="256" fill="#8b9094">core 2</text>
+        </g>
+        <g>
+          <rect x="236" y="72" width="100" height="200" rx="5" fill="#2c3033" stroke="#4c4f52"/>
+          <text x="286" y="90" fill="#dfdfdf" font-size="12">VOICE 3</text>
+          <rect x="244" y="98"  width="84" height="26" rx="3" fill="#1d2125" stroke="#aa88ff"/>
+          <rect x="244" y="130" width="84" height="26" rx="3" fill="#1d2125" stroke="#ffb74d"/>
+          <rect x="244" y="162" width="84" height="26" rx="3" fill="#1d2125" stroke="#ff5252"/>
+          <rect x="244" y="194" width="84" height="26" rx="3" fill="#1d2125" stroke="#1de9b6"/>
+          <text x="286" y="256" fill="#8b9094">core 3</text>
+        </g>
+        <g>
+          <rect x="344" y="72" width="100" height="200" rx="5" fill="#2c3033" stroke="#4c4f52"/>
+          <text x="394" y="90" fill="#dfdfdf" font-size="12">VOICE 4</text>
+          <rect x="352" y="98"  width="84" height="26" rx="3" fill="#1d2125" stroke="#aa88ff"/>
+          <rect x="352" y="130" width="84" height="26" rx="3" fill="#1d2125" stroke="#ffb74d"/>
+          <rect x="352" y="162" width="84" height="26" rx="3" fill="#1d2125" stroke="#ff5252"/>
+          <rect x="352" y="194" width="84" height="26" rx="3" fill="#1d2125" stroke="#1de9b6"/>
+          <text x="394" y="256" fill="#8b9094">core 4</text>
+        </g>
+        <g>
+          <rect x="452" y="72" width="100" height="200" rx="5" fill="#2c3033" stroke="#4c4f52"/>
+          <text x="502" y="90" fill="#dfdfdf" font-size="12">VOICE 5</text>
+          <rect x="460" y="98"  width="84" height="26" rx="3" fill="#1d2125" stroke="#aa88ff"/>
+          <rect x="460" y="130" width="84" height="26" rx="3" fill="#1d2125" stroke="#ffb74d"/>
+          <rect x="460" y="162" width="84" height="26" rx="3" fill="#1d2125" stroke="#ff5252"/>
+          <rect x="460" y="194" width="84" height="26" rx="3" fill="#1d2125" stroke="#1de9b6"/>
+          <text x="502" y="256" fill="#8b9094">core 5</text>
+        </g>
+        <g>
+          <rect x="560" y="72" width="100" height="200" rx="5" fill="#2c3033" stroke="#4c4f52"/>
+          <text x="610" y="90" fill="#dfdfdf" font-size="12">VOICE 6</text>
+          <rect x="568" y="98"  width="84" height="26" rx="3" fill="#1d2125" stroke="#aa88ff"/>
+          <rect x="568" y="130" width="84" height="26" rx="3" fill="#1d2125" stroke="#ffb74d"/>
+          <rect x="568" y="162" width="84" height="26" rx="3" fill="#1d2125" stroke="#ff5252"/>
+          <rect x="568" y="194" width="84" height="26" rx="3" fill="#1d2125" stroke="#1de9b6"/>
+          <text x="610" y="256" fill="#8b9094">core 6</text>
+        </g>
+      </g>
+
+      <g stroke="#8b9094" stroke-width="1.4" marker-end="url(#arw)">
+        <line x1="70"  y1="272" x2="70"  y2="300"/>
+        <line x1="178" y1="272" x2="178" y2="300"/>
+        <line x1="286" y1="272" x2="286" y2="300"/>
+        <line x1="394" y1="272" x2="394" y2="300"/>
+        <line x1="502" y1="272" x2="502" y2="300"/>
+        <line x1="610" y1="272" x2="610" y2="300"/>
+      </g>
+
+      <rect x="20" y="302" width="640" height="34" rx="5" fill="#2c3033" stroke="#8fa0ff" stroke-width="1.5"/>
+      <text x="340" y="324" fill="#8fa0ff" font-size="13" text-anchor="middle" font-family="monospace">
+        master mix → master FX → limiter → sound card
+      </text>
+    </svg>
+    <figcaption>
+      The thing to notice is how <em>boring</em> the middle of this picture is. Six identical columns
+      that share nothing while they run is not a coincidence — it is the whole design, and the next
+      section explains why.
+    </figcaption>
+  </figure>
+
+  <h2>The number that decided everything</h2>
+
+  <p>
+    Sound leaves a computer in batches. The sound card asks for the next
+    <a class="jargon" href="../glossary.html#block">block</a> of audio, you fill it, it asks again.
+    This project renders at most 128 <a class="jargon" href="../glossary.html#frame">frames</a> per
+    block at a <a class="jargon" href="../glossary.html#sample-rate">sample rate</a> of 48,000 frames
+    per second. Divide one by the other and you get the only deadline that matters:
+  </p>
+
+  <p style="text-align:center; font-family:var(--mono); font-size:1.1rem; color:var(--head)">
+    128 ÷ 48,000 = <strong>2.67 milliseconds</strong>, 375 times every second
+  </p>
+
+  <p>
+    In 2.67 milliseconds, six synthesizers must each render up to sixteen notes through three
+    oscillators, two filters, twelve effects and a modulation matrix — and then all of it has to be
+    mixed and handed back. Miss the deadline once and you do not get a slightly late result, you get
+    an audible click. This is what
+    <a class="jargon" href="../glossary.html#real-time">real-time</a> means: not <em>fast</em>, but
+    <em>on time</em>, every single time, forever.
+  </p>
+
+  <p>
+    That budget was computed before a line of code was written, and it picked the architecture by
+    itself. Two ideas fall straight out of it:
+  </p>
+
+  <ul>
+    <li><strong>Spread the six voices across six CPU cores.</strong> The target machine has six fast
+      cores. There are six voices. Each gets one, and because they share nothing while they run, they
+      never have to wait for each other.</li>
+    <li><strong>Compute eight notes at a time within a voice.</strong> Modern processors have
+      instructions that do the same arithmetic to eight numbers simultaneously — see
+      <a class="jargon" href="../glossary.html#simd">SIMD</a>. Put one note in each
+      <a class="jargon" href="../glossary.html#lane">lane</a> and sixteen notes cost two operations
+      instead of sixteen. Part C is entirely about making that work.</li>
+  </ul>
+
+  <p>
+    Cross-voice modulation would normally ruin the first idea, because voice four would have to ask
+    voice one what it is doing. The plan sidesteps it: all cross-voice values are worked out
+    <em>before</em> the six voices start, and are read-only for the rest of the block. The voices
+    stay independent, and no locking is needed anywhere.
+  </p>
+
+  <table class="vocab">
+    <tr><th>Word</th><th>What it actually means</th></tr>
+    <tr><td>voice</td><td>Here, one of six whole synthesizers. Elsewhere in the world, one sounding note. Watch out for this one.</td></tr>
+    <tr><td>polyphonic</td><td>Able to play more than one note at once. Each voice here handles sixteen.</td></tr>
+    <tr><td>oscillator</td><td>The part that vibrates — where the tone is born. Everything else shapes it.</td></tr>
+    <tr><td>wavetable</td><td>A stored set of waveform shapes an oscillator can sweep between, so the tone morphs instead of staying fixed.</td></tr>
+    <tr><td>modulation matrix</td><td>A grid for wiring anything that moves to anything that can be moved, with a depth for each connection.</td></tr>
+    <tr><td>encoder</td><td>A knob with no end stops. It reports “turned a bit left / a bit right” rather than an absolute position, so it can control whatever the screen currently says it controls.</td></tr>
+    <tr><td>block</td><td>One batch of audio computed in a single go. Here, at most 128 frames — about 2.67 ms of sound.</td></tr>
+  </table>
+
+  <h2>The code</h2>
+
+  <p>
+    The entire instrument, as numbers. This is a real file, and it is the first thing that got built
+    after the project could compile at all:
+  </p>
+
+  <figure class="snippet">
+    <figcaption><span class="real">real code</span> · digi-synth0001/src/core/Constants.h</figcaption>
+<pre><code><span class="c">/** Simultaneously sounding voices. */</span>
+<span class="k">constexpr</span> <span class="t">int</span> kNumVoices = <span class="n">6</span>;
+
+<span class="c">/** Notes the allocator can hold at once, sounding or queued. */</span>
+<span class="k">constexpr</span> <span class="t">int</span> kMaxNotes = <span class="n">16</span>;
+
+<span class="c">/** Largest audio block the engine ever renders in one go. Buffers sized from
+    this are allocated once, never on the audio thread. */</span>
+<span class="k">constexpr</span> <span class="t">int</span> kMaxBlock = <span class="n">128</span>;
+
+<span class="c">/** Control-rate subdivision of an audio block: modulation is evaluated once per
+    `kControlBlock` samples, not per sample. Divides `kMaxBlock` exactly. */</span>
+<span class="k">constexpr</span> <span class="t">int</span> kControlBlock = <span class="n">32</span>;
+
+<span class="c">/** Slots in the FX chain. */</span>
+<span class="k">constexpr</span> <span class="t">int</span> kNumFxSlots = <span class="n">12</span>;
+
+<span class="c">/** Rows in the modulation matrix — one source per row. */</span>
+<span class="k">constexpr</span> <span class="t">int</span> kMatrixRows = <span class="n">6</span>;
+</code></pre>
+  </figure>
+
+  <p>
+    Read it as a description of the instrument and it says everything the last two pages said, in
+    twelve lines. Six voices. Sixteen notes each. Twelve effect slots. Six matrix rows.
+  </p>
+
+  <p>
+    <code>kControlBlock = 32</code> is the one that is not obvious. Modulation — an envelope opening a
+    filter, an LFO wobbling a pitch — does not need to be recalculated 48,000 times a second, because
+    nothing you can hear moves that fast. So it is worked out once every 32 frames and smoothly
+    interpolated in between. That is a 32× saving on a large part of the arithmetic, bought for no
+    audible cost, and it is a good example of the kind of trade this project makes constantly.
+  </p>
+
+  <p>
+    The second piece of real material is not code at all — it is the seven steps that happen inside
+    every one of those 2.67 millisecond windows:
+  </p>
+
+  <figure class="snippet">
+    <figcaption><span class="real">from the design doc, jargon trimmed</span> · digi-synth0001/docs/ARCHITECTURE.md § The block cycle</figcaption>
+<pre><code><span class="n">1.</span> Acquire-load all snapshots (matrix, FX chain config, wavetables) — once per block.
+<span class="n">2.</span> Advance transport; sequencer emits note on/off for all 6 voices.
+<span class="n">3.</span> Evaluate GLOBAL modulators + global matrix → read-only for the rest of the block.
+<span class="n">4.</span> Dispatch 6 voice tasks. Callback thread runs task 0; workers 1–5 take 1–5.
+<span class="n">5.</span> Barrier join (spin ~5 µs, then sleep).
+<span class="n">6.</span> Master mix → master FX → limiter → output.
+<span class="n">7.</span> Push scope/level/mod data into lock-free ring buffers for the screen.
+</code></pre>
+  </figure>
+
+  <p>
+    Steps 1 and 3 exist purely so that step 4 can be fearless. By the time the six voices start, every
+    shared thing has already been read and frozen. Step 5 is where the six cores meet again. Step 7 is
+    how the screen finds out what happened without ever interrupting the audio. Almost every lesson in
+    Parts C through K is a magnified view of one line of this list.
+  </p>
+
+  <div class="arch-note">
+    <span class="label">The architecture idea · let the constraint choose the design</span>
+    <p>
+      The parallelism here was not a clever optimisation added when things got slow. It was chosen on
+      day one, from a number — 2.67 ms — computed before anything existed. Because it came first,
+      everything else could be shaped to fit it: the voices share nothing, cross-voice modulation is
+      resolved early, modulation runs at a coarser rate, and effects are allocated on a different
+      thread entirely.
+    </p>
+    <p>
+      Optimising later would not have produced this design. It would have produced the obvious one
+      with locks bolted on, and locks are exactly what a 2.67 ms deadline cannot survive. When a
+      project has one dominant constraint, find it early and let it do the arguing.
+    </p>
+  </div>
+
+  <div class="cpp-note">
+    <span class="label">C++ · constexpr, and why not just write 6</span>
+    <p>
+      <code>constexpr int kNumVoices = 6;</code> declares a value the compiler works out while
+      building, not while running. By the time the program starts, every use of
+      <code>kNumVoices</code> has already been replaced by a literal <code>6</code> — so the name
+      costs nothing at all.
+    </p>
+    <p>
+      The alternative that older C++ code uses is <code>#define kNumVoices 6</code>, a text
+      substitution performed before the compiler even looks at the code. It works, and it is worse in
+      every way that matters: a macro has no type, obeys no scope, and cannot be seen by a debugger,
+      so a mistake shows up as a baffling error somewhere else entirely. <code>constexpr</code> gives
+      you the same zero cost with a real, typed, scoped name.
+    </p>
+    <p>
+      The header also has a second trick — <code>static_assert</code>, which makes the compiler
+      <em>check</em> the relationships between these numbers and refuse to build if they drift apart.
+      That gets its own lesson in c1.
+    </p>
+  </div>
+
+  <h2>Go deeper</h2>
+  <ul class="deeper">
+    <li><a href="https://www.soundonsound.com/series/synth-secrets-sound-sound">Synth Secrets — Gordon Reid</a>
+      <span class="why">If the words oscillator, filter and envelope are new, read part 1. Sixty-three
+      articles exist but the first five will carry you through most of this site.</span></li>
+    <li><a href="https://learningsynths.ableton.com/">Learning Synths — Ableton</a>
+      <span class="why">An hour of playing with a synth in your browser, no installation. The fastest
+      possible way to make Part D and Part H feel like something rather than jargon.</span></li>
+    <li><a href="http://www.rossbencina.com/code/real-time-audio-programming-101-time-waits-for-nothing">Real-time audio programming 101 — Ross Bencina</a>
+      <span class="why">Twenty minutes on why the 2.67 ms deadline is different from "make it fast".
+      Everything in Part E depends on understanding this. (http only.)</span></li>
+    <li><a href="https://github.com/mtytel/vital">Vital — source code</a>
+      <span class="why">An open-source synth with the wavetable and spectral features this project is
+      chasing. Useful for seeing what one voice of the finished thing looks like.</span></li>
+  </ul>
+
+  <h2>Check yourself</h2>
+  <div class="check">
+    <details>
+      <summary>Why not just run six copies of the program, one per synthesizer?</summary>
+      <p>Three reasons. They would each want the sound card. Their sequencers would drift apart,
+        because nothing would keep them sample-accurate with each other. And the cross-voice
+        modulation matrix — voice one's envelope opening voice four's filter — has no way to exist
+        across process boundaries. One process, six cores, shared clock.</p>
+    </details>
+    <details>
+      <summary>What is the deadline, and what happens when it is missed?</summary>
+      <p>2.67 milliseconds, 375 times a second: 128 frames at 48 kHz. Miss it and the sound card has
+        nothing to play, which you hear as a click or a stutter — an
+        <a href="../glossary.html#xrun">xrun</a>. A late answer is a wrong answer.</p>
+    </details>
+    <details>
+      <summary>Why is modulation only recalculated every 32 frames?</summary>
+      <p>Because nothing audible moves that fast. An envelope or LFO recalculated 1,500 times a
+        second and smoothly interpolated in between is indistinguishable from one recalculated 48,000
+        times, and costs a thirty-second as much. The saved budget goes into effects and notes
+        instead.</p>
+    </details>
+  </div>
+
+  <nav class="pager">
+    <a href="../index.html">&larr; Contents</a>
+    <span style="color:var(--muted)">next: a2 · How this project is run — not written yet</span>
+  </nav>
+
+  <footer class="plan-link">
+    Shadows PLAN.md § Context and § Decisions already made · digi-synth0001
+  </footer>
+
+</main>
+</body>
+</html>

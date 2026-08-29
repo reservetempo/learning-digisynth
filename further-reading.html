@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Further reading — learning digisynth</title>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body class="p-e">
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">learning <span>digisynth</span></a>
+    <nav>
+      <a href="index.html">Contents</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="further-reading.html" aria-current="page">Further reading</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <h1>Further reading</h1>
+
+  <p class="intro">
+    Everything worth reading twice, in one place. Each lesson links to the few items that matter to
+    it; this page is the whole library, grouped by subject. Nothing here is behind a paywall and
+    nothing needs an account.
+  </p>
+
+  <p>
+    If you only ever follow one link from this site, make it
+    <a href="https://www.soundonsound.com/series/synth-secrets-sound-sound">Synth Secrets</a>.
+    It is 63 articles long and it will teach you more about what this instrument is <em>for</em>
+    than any amount of C++ will.
+  </p>
+
+  <h2>Understanding synthesizers</h2>
+  <ul class="deeper">
+    <li><a href="https://www.soundonsound.com/series/synth-secrets-sound-sound">Synth Secrets — Gordon Reid, Sound On Sound</a>
+      <span class="why">63 monthly articles, 1999–2004, and still the best explanation of synthesis
+      in existence. Starts at "what is a sound" and ends at synthesizing a snare drum. Read one a week.</span></li>
+    <li><a href="https://learningsynths.ableton.com/">Learning Synths — Ableton</a>
+      <span class="why">Interactive, in the browser, no installation. An hour here will make every
+      word in Part D and Part H of this site land properly. Start here if the vocabulary is the problem.</span></li>
+  </ul>
+
+  <h2>Real-time audio programming</h2>
+  <ul class="deeper">
+    <li><a href="http://www.rossbencina.com/code/real-time-audio-programming-101-time-waits-for-nothing">Real-time audio programming 101: time waits for nothing — Ross Bencina</a>
+      <span class="why">The single most important article for understanding why the audio thread has
+      such strange rules. Twenty minutes, and everything in Part E will make sense afterwards.
+      (The site is http-only — your browser may warn about that.)</span></li>
+    <li><a href="https://www.youtube.com/@audiodevcon">Audio Developer Conference (ADC) — YouTube</a>
+      <span class="why">The annual conference for exactly this kind of work. Talks on real-time
+      safety, SIMD, filter design, plugin architecture. Free, and the quality is unusually high.</span></li>
+    <li><a href="https://www.youtube.com/@TheAudioProgrammer">The Audio Programmer — YouTube</a>
+      <span class="why">The friendliest on-ramp to JUCE and audio C++. Tutorial-shaped rather than
+      conference-shaped; good when you want to be shown rather than told.</span></li>
+  </ul>
+
+  <h2>Digital signal processing</h2>
+  <ul class="deeper">
+    <li><a href="https://www.earlevel.com/main/category/digital-audio/oscillators/">EarLevel Engineering — oscillators</a>
+      <span class="why">Nigel Redmon's series on wavetable oscillators is the clearest practical
+      writing on the subject anywhere, and it is exactly what Part G builds.</span></li>
+    <li><a href="https://ccrma.stanford.edu/~jos/filters/">Introduction to Digital Filters — Julius O. Smith III</a>
+      <span class="why">A complete free textbook from Stanford's CCRMA. Heavier going and worth it;
+      when a lesson here says "the maths is a field of its own", this is the field.</span></li>
+    <li><a href="https://ccrma.stanford.edu/~jos/sasp/">Spectral Audio Signal Processing — Julius O. Smith III</a>
+      <span class="why">The companion volume, on the frequency domain. Background for Part G's FFT
+      and spectral morphing lessons.</span></li>
+    <li><a href="https://cytomic.com/technical-papers/">Cytomic technical papers — Andy Simper</a>
+      <span class="why">The papers behind the state-variable filter design this project uses.
+      Short, dense, and the reference implementations are in them.</span></li>
+    <li><a href="https://www.musicdsp.org/">musicdsp.org</a>
+      <span class="why">A decades-old archive of code snippets and algorithms. Unpolished, sometimes
+      wrong, occasionally exactly the thing you needed.</span></li>
+    <li><a href="https://www.dsprelated.com/">dsprelated.com</a>
+      <span class="why">Articles, forums and free books. Good for looking up a term you have just
+      met and want three explanations of.</span></li>
+  </ul>
+
+  <h2>Learning C++</h2>
+  <ul class="deeper">
+    <li><a href="https://www.learncpp.com/">learncpp.com</a>
+      <span class="why">The best free structured C++ course. If any snippet on this site is opaque
+      at the language level rather than the audio level, the answer is here.</span></li>
+    <li><a href="https://en.cppreference.com/w/">cppreference.com</a>
+      <span class="why">The reference, not a tutorial. Terse and authoritative — the place to check
+      exactly what a standard-library thing promises.</span></li>
+    <li><a href="https://godbolt.org/">Compiler Explorer (godbolt.org)</a>
+      <span class="why">Paste C++ in, see the machine instructions the compiler emits, live. The
+      fastest way to make Part C's SIMD lessons concrete: you can literally watch eight numbers get
+      added by one instruction.</span></li>
+  </ul>
+
+  <h2>Concurrency and performance</h2>
+  <ul class="deeper">
+    <li><a href="https://preshing.com/">Preshing on Programming — Jeff Preshing</a>
+      <span class="why">Lock-free programming and memory ordering, explained with diagrams instead
+      of standardese. The prerequisite reading for lesson c6.</span></li>
+    <li><a href="https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html">Intel Intrinsics Guide</a>
+      <span class="why">Searchable documentation for every SIMD instruction, including the
+      <code>_mm256_*</code> functions Part C uses. Look one up when a snippet names it.</span></li>
+  </ul>
+
+  <h2>Tools and frameworks</h2>
+  <ul class="deeper">
+    <li><a href="https://juce.com/learn/tutorials/">JUCE tutorials — official</a>
+      <span class="why">The framework this instrument is built on. The audio and GUI tutorials cover
+      most of Parts B and L.</span></li>
+    <li><a href="https://www.youtube.com/@JUCElibrary">JUCE — YouTube</a>
+      <span class="why">Official talks and walkthroughs, including the annual JUCE summit sessions.</span></li>
+    <li><a href="https://cliutils.gitlab.io/modern-cmake/">An Introduction to Modern CMake — Henry Schreiner</a>
+      <span class="why">CMake explained as it should be written today rather than as it was written
+      in 2010. Background for lesson b1.</span></li>
+  </ul>
+
+  <h2>Curiosities worth an evening</h2>
+  <ul class="deeper">
+    <li><a href="http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf">The Euclidean Algorithm Generates Traditional Musical Rhythms — Godfried Toussaint (PDF)</a>
+      <span class="why">A 2,300-year-old algorithm for finding common divisors turns out to generate
+      the bell patterns of West Africa, the Cuban tresillo and the Turkish aksak. This is the paper
+      behind Part K's sequencer.</span></li>
+    <li><a href="https://github.com/mtytel/vital">Vital — Matt Tytel (source code)</a>
+      <span class="why">A modern spectral-warping wavetable synth, open source. This project copies
+      no code from it, but its feature set is the target and its colour palette is reused. Worth
+      reading to see what a finished version of this looks like.</span></li>
+  </ul>
+
+  <footer class="plan-link">
+    All links checked and resolving on 2026-08-29 · new links are added as lessons are written
+  </footer>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About this site — learning digisynth</title>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body class="p-a">
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">learning <span>digisynth</span></a>
+    <nav>
+      <a href="index.html">Contents</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="further-reading.html">Further reading</a>
+      <a href="about.html" aria-current="page">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <h1>About this site</h1>
+
+  <p class="intro">
+    This is the companion to a real, in-progress project: a standalone digital synthesizer written
+    in C++ and JUCE, for a dedicated instrument built out of a tablet and a custom knob controller.
+    That project is driven by a 13-phase plan of about 130 steps. The plan is written to be
+    <em>executed</em>, not read, and it shows. This site is the readable half.
+  </p>
+
+  <h2>How the two fit together</h2>
+
+  <p>
+    The build lives in a folder called <code>digi-synth0001</code>. Its <code>PLAN.md</code> is the
+    checklist — one line per step, a <em>Verify</em> command, and a tick when it is done. Steps are
+    small on purpose: one unit of code, one test file, one green test run, at most about 400 new
+    lines.
+  </p>
+
+  <p>
+    This site groups roughly three of those steps into one lesson, chosen so each lesson is
+    <em>one idea</em> rather than one commit. The grouping ignores step numbering where step
+    numbering would split an idea in half. Every lesson names the exact steps it shadows, so you
+    can always go and read the original.
+  </p>
+
+  <h2>Built, or planned?</h2>
+
+  <p>
+    The instrument is not finished, and lessons are written ahead of it. Each lesson carries a badge:
+  </p>
+
+  <p>
+    <span class="badge status-built">Built</span> &nbsp;— the code exists. Every snippet on that page
+    is quoted from the real file, with its path in the caption. What you read is what runs.
+  </p>
+
+  <p>
+    <span class="badge status-planned">Planned</span> &nbsp;— the step has not been implemented yet.
+    The design is settled and the lesson describes it faithfully, but the snippets are illustrative
+    and say so in their caption. Expect the details to shift when the code is actually written;
+    the ideas will not.
+  </p>
+
+  <h2>How each lesson is laid out</h2>
+
+  <p>Every page follows the same ten blocks, so you always know where to look:</p>
+
+  <ol>
+    <li><strong>In one sentence</strong> — what gets built, in plain words.</li>
+    <li><strong>Why it exists</strong> — the problem that forced it, before any solution.</li>
+    <li><strong>The walkthrough</strong> — the explanation proper, one new term at a time.</li>
+    <li><strong>Vocabulary</strong> — the words this lesson introduces, defined in a table.</li>
+    <li><strong>A diagram</strong>, where a picture genuinely helps.</li>
+    <li><strong>The code</strong> — two to four short snippets, each explained after it.</li>
+    <li><strong>The architecture idea</strong> — one transferable design lesson, named.</li>
+    <li><strong>The C++ or JUCE note</strong> — one language concept, explained properly.</li>
+    <li><strong>Go deeper</strong> — a few outside links worth the time.</li>
+    <li><strong>Check yourself</strong> — three questions with the answers hidden.</li>
+  </ol>
+
+  <p>
+    Words with a <a class="jargon" href="glossary.html#simd">dotted underline</a> link to the
+    <a href="glossary.html">glossary</a>. Every term is introduced once, in the lesson that first
+    needs it, and linked from everywhere else.
+  </p>
+
+  <h2>Two words that mean two things</h2>
+
+  <p>
+    Synthesizer vocabulary is full of collisions, and one in particular will trip you up.
+    <strong>Voice</strong> normally means "one sounding note" — a 16-voice synth plays 16 notes at
+    once. In this project a <em>voice</em> is one of the six complete, independent synthesizers, each
+    of which is itself polyphonic. This site says <em>voice</em> for the big one and <em>note</em>
+    for the small one, everywhere, including where the source code does not.
+  </p>
+
+  <p>
+    <strong>Sample</strong> is the other one: it means both "one measurement of a waveform" and
+    "a recording you can play back". Where it matters, this site says <em>frame</em> for the first
+    and <em>sample</em> only for the second.
+  </p>
+
+  <h2>Reading order</h2>
+
+  <p>
+    Front to back works, and the parts are ordered so that nothing depends on something later. But
+    the lessons are self-contained enough to jump around. Three reasonable routes:
+  </p>
+
+  <ul>
+    <li><strong>You want to understand synthesizers.</strong> a1, then Parts G, H, I, J, K — the
+      sound-making half. Skip Part C entirely.</li>
+    <li><strong>You want to learn C++ and software architecture.</strong> a2, Part B, Part C, then
+      d1, i1, i2 — the parts where the engineering ideas live.</li>
+    <li><strong>You want to follow the build.</strong> Front to back, and stop where the
+      <span class="badge status-built">Built</span> badges stop.</li>
+  </ul>
+
+  <h2>Where the code lives</h2>
+
+  <p>
+    Snippets cite paths inside the synth project, like <code>src/core/PolyFloat_avx2.h</code>.
+    The layout is:
+  </p>
+
+  <pre><code>digi-synth0001/
+  PLAN.md            the checklist: every step, and a tick when done
+  CLAUDE.md          the working rules that bind every step
+  docs/
+    ARCHITECTURE.md  the design: threads, block cycle, parameters, layout
+    CONVENTIONS.md   naming, file layout, include order
+    steps/&lt;id&gt;.md    a note for each step that discovered something
+  src/
+    core/            the primitives: SIMD types, denormals, queues, thread pool
+    params/          the parameter table and everything derived from it
+    engine/          audio I/O, the synth engine, voices, note allocation
+    dsp/             oscillators, wavetables, filters, modulators
+      fx/            the twelve effect types and the chain that holds them
+    mod/             the modulation matrix
+    seq/             transport and the Euclidean sequencer
+    ui/              theme, layout, encoders, displays
+      pages/         the seven per-voice pages and the four sequencer pages
+  tests/             one Catch2 suite per unit, mirroring src/</code></pre>
+
+  <p>
+    The <code>docs/steps/</code> notes are the most interesting files in the whole project. Each one
+    records something that went wrong or surprised someone — and those notes are where a lot of this
+    site's content comes from.
+  </p>
+
+  <footer class="plan-link">
+    A companion to digi-synth0001 · hand-written HTML, no build step, no tracking, no scripts
+  </footer>
+
+</main>
+</body>
+</html>

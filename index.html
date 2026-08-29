@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>learning digisynth — contents</title>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">learning <span>digisynth</span></a>
+    <nav>
+      <a href="index.html" aria-current="page">Contents</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="further-reading.html">Further reading</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <h1>Building a digital synthesizer, explained</h1>
+
+  <p class="intro">
+    Somewhere on this machine, a 13-phase plan is turning into a real instrument: six
+    complete polyphonic synths running side by side on six CPU cores, driven by twelve
+    hardware knobs and drawn on a tablet screen. The plan that describes it is written
+    for a machine to execute, and it reads like it. This site is the other half — one
+    page per idea, in English, with the code, the vocabulary, and the reason anyone
+    would do it that way.
+  </p>
+
+  <p>
+    Read it in order, or drop into whatever sounds interesting. Every page is
+    self-contained, defines the words it uses, and links to the
+    <a href="glossary.html">glossary</a> for the ones it borrows.
+    New here? Start with <a href="lessons/a1-what-were-building.html">a1</a>, then
+    <a href="about.html">how to read this site</a>.
+  </p>
+
+  <!-- ============================== PART A ============================== -->
+  <section class="part p-a">
+    <h2>Part A · Orientation <span class="phase">no code yet</span></h2>
+    <p class="gist">What is being built, and the unusual discipline it is being built under.</p>
+    <ol class="lessons">
+      <li>
+        <span class="id">a1</span>
+        <a class="title" href="lessons/a1-what-were-building.html">What we are actually building</a>
+        <p class="gist">Six synths, twelve knobs, one tablet — and the one sentence that decided the whole architecture.</p>
+        <p class="covers">PLAN · Context, Decisions</p>
+      </li>
+      <li class="todo">
+        <span class="id">a2</span>
+        <span class="title">How this project is run</span>
+        <p class="gist">One step per session, a size budget, a verify gate, and four documents that each have exactly one job.</p>
+        <p class="covers">PLAN · step protocol, 0.6, 0.7, 0.9</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART B ============================== -->
+  <section class="part p-b">
+    <h2>Part B · Getting a program to exist <span class="phase">Phase 0</span></h2>
+    <p class="gist">From a folder of text files to a window on screen that a test can prove is working.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">b1</span>
+        <span class="title">From text to a running program</span>
+        <p class="gist">Compilers, linkers, CMake, and why "warnings are errors" is a design decision rather than a preference.</p>
+        <p class="covers">PLAN · 0.1, 0.3</p>
+      </li>
+      <li class="todo">
+        <span class="id">b2</span>
+        <span class="title">The first window</span>
+        <p class="gist">What JUCE is, what the message thread does, and why this UI has no responsive layout on purpose.</p>
+        <p class="covers">PLAN · 0.2, 0.4</p>
+      </li>
+      <li class="todo">
+        <span class="id">b3</span>
+        <span class="title">Scripts, and the first test</span>
+        <p class="gist">Automating the build, and the trap where an empty test suite reports a pass.</p>
+        <p class="covers">PLAN · 0.5, 0.8</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART C ============================== -->
+  <section class="part p-c">
+    <h2>Part C · The primitives that make it fast <span class="phase">Phase 1</span></h2>
+    <p class="gist">The small, strange, heavily-tested pieces everything else is built out of.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">c1</span>
+        <span class="title">Constants and compile-time checks</span>
+        <p class="gist">Numbers the compiler knows, assertions that fail before the program ever runs.</p>
+        <p class="covers">PLAN · 1.1</p>
+      </li>
+      <li class="todo">
+        <span class="id">c2</span>
+        <span class="title">Eight notes at once</span>
+        <p class="gist">One instruction, eight numbers: SIMD from scratch, and one note per lane.</p>
+        <p class="covers">PLAN · 1.2a, 1.2b</p>
+      </li>
+      <li class="todo">
+        <span class="id">c3</span>
+        <span class="title">Three engines behind one name</span>
+        <p class="gist">Testing fast code against slow code, and breaking your own code on purpose to check the tests notice.</p>
+        <p class="covers">PLAN · 1.3a–1.4cb</p>
+      </li>
+      <li class="todo">
+        <span class="id">c4</span>
+        <span class="title">Code without branches</span>
+        <p class="gist">Why an <code>if</code> per note is expensive, and how you compute both answers and throw one away.</p>
+        <p class="covers">PLAN · 1.5a–1.5cb</p>
+      </li>
+      <li class="todo">
+        <span class="id">c5</span>
+        <span class="title">Tiny numbers, big stalls</span>
+        <p class="gist">Denormals: the numbers so small the CPU slows to a crawl. And RAII, the best idea in C++.</p>
+        <p class="covers">PLAN · 1.6</p>
+      </li>
+      <li class="todo">
+        <span class="id">c6</span>
+        <span class="title">Handing work between threads</span>
+        <p class="gist">What a race is, a queue with no locks in it, and swapping a whole structure under a running engine.</p>
+        <p class="covers">PLAN · 1.7, 1.8</p>
+      </li>
+      <li class="todo">
+        <span class="id">c7</span>
+        <span class="title">Six cores, one block</span>
+        <p class="gist">A thread pool, a barrier that spins, pinning work to the fast cores, and measuring in microseconds.</p>
+        <p class="covers">PLAN · 1.9, 1.10, 1.11</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART D ============================== -->
+  <section class="part p-d">
+    <h2>Part D · Describing every knob <span class="phase">Phase 2</span></h2>
+    <p class="gist">Roughly a thousand parameters, described once, in one place, and used by everything.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">d1</span>
+        <span class="title">One source of truth</span>
+        <p class="gist">A table the compiler bakes in, and the rule that adding a parameter is a one-line edit.</p>
+        <p class="covers">PLAN · 2.1, 2.2, 2.12, 2.13</p>
+      </li>
+      <li class="todo">
+        <span class="id">d2</span>
+        <span class="title">What a synth's knobs actually are</span>
+        <p class="gist">Cutoff, resonance, drive, unison, detune, wavetable position — the vocabulary lesson.</p>
+        <p class="covers">PLAN · 2.3–2.7</p>
+      </li>
+      <li class="todo">
+        <span class="id">d3</span>
+        <span class="title">Storing and shaping a value</span>
+        <p class="gist">Cache lines, false sharing, curves that make a knob feel right, and why nothing may ever jump.</p>
+        <p class="covers">PLAN · 2.8–2.11, 1.12</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART E ============================== -->
+  <section class="part p-e">
+    <h2>Part E · Making sound come out <span class="phase">Phase 3</span></h2>
+    <p class="gist">The deadline that never moves, and the seven things that happen inside it.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">e1</span>
+        <span class="title">The audio callback</span>
+        <p class="gist">Sample rates, buffers, latency, dropouts — and the list of things you may never do here.</p>
+        <p class="covers">PLAN · 3.1, 3.2</p>
+      </li>
+      <li class="todo">
+        <span class="id">e2</span>
+        <span class="title">The block cycle</span>
+        <p class="gist">Six voices dispatched across six cores and joined again, 375 times a second.</p>
+        <p class="covers">PLAN · 3.3–3.10</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART F ============================== -->
+  <section class="part p-f">
+    <h2>Part F · Notes and polyphony <span class="phase">Phase 4</span></h2>
+    <p class="gist">What happens between pressing a note and hearing one.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">f1</span>
+        <span class="title">What a "voice" is</span>
+        <p class="gist">Sixteen notes packed into two SIMD groups, and deciding which note to kill when you run out.</p>
+        <p class="covers">PLAN · 4.1–4.4</p>
+      </li>
+      <li class="todo">
+        <span class="id">f2</span>
+        <span class="title">Glide, unison, and playing dynamics</span>
+        <p class="gist">Sliding between pitches, stacking detuned copies, and using how you played as a control signal.</p>
+        <p class="covers">PLAN · 4.5–4.7</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART G ============================== -->
+  <section class="part p-g">
+    <h2>Part G · Oscillators and wavetables <span class="phase">Phase 5</span></h2>
+    <p class="gist">Where the sound is actually born, and the maths that keeps it clean.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">g1</span>
+        <span class="title">What a spectrum is</span>
+        <p class="gist">Harmonics, the FFT, and the two ways of looking at the same sound.</p>
+        <p class="covers">PLAN · 5.1, 5.2</p>
+      </li>
+      <li class="todo">
+        <span class="id">g2</span>
+        <span class="title">Wavetables, aliasing and mipmaps</span>
+        <p class="gist">Why a bright waveform played high goes horribly wrong, and the standard fix.</p>
+        <p class="covers">PLAN · 5.3–5.8</p>
+      </li>
+      <li class="todo">
+        <span class="id">g3</span>
+        <span class="title">Playing and warping a wave</span>
+        <p class="gist">Phase accumulators, interpolation, and the cheap tricks that make one waveform into hundreds.</p>
+        <p class="covers">PLAN · 5.9–5.14</p>
+      </li>
+      <li class="todo">
+        <span class="id">g4</span>
+        <span class="title">When an idea is too expensive</span>
+        <p class="gist">An honest cost estimate kills the obvious approach; precomputing rescues it.</p>
+        <p class="covers">PLAN · 5.15–5.19</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART H ============================== -->
+  <section class="part p-h">
+    <h2>Part H · Filters and modulators <span class="phase">Phase 6</span></h2>
+    <p class="gist">Removing what you do not want, and making everything move.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">h1</span>
+        <span class="title">What a filter is</span>
+        <p class="gist">Cutoff, resonance, poles — and why digital filter design is a field of its own.</p>
+        <p class="covers">PLAN · 6.1, 6.2</p>
+      </li>
+      <li class="todo">
+        <span class="id">h2</span>
+        <span class="title">Combs, formants, and one module for all of them</span>
+        <p class="gist">Choosing a behaviour at runtime without paying for the choice on every sample.</p>
+        <p class="covers">PLAN · 6.3, 6.4</p>
+      </li>
+      <li class="todo">
+        <span class="id">h3</span>
+        <span class="title">Things that move by themselves</span>
+        <p class="gist">Envelopes, LFOs, randomness and macros: the sources everything else can be wired to.</p>
+        <p class="covers">PLAN · 6.5–6.9</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART I ============================== -->
+  <section class="part p-i">
+    <h2>Part I · Effects <span class="phase">Phase 7</span></h2>
+    <p class="gist">Twelve reorderable slots per voice, and the eleven things that can go in one.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">i1</span>
+        <span class="title">An interface for effects</span>
+        <p class="gist">Designing something you have to implement eleven times, and what that flexibility costs.</p>
+        <p class="covers">PLAN · 7.1</p>
+      </li>
+      <li class="todo">
+        <span class="id">i2</span>
+        <span class="title">A chain you can reorder while it runs</span>
+        <p class="gist">Building the new chain somewhere else, publishing it, and crossfading so it does not click.</p>
+        <p class="covers">PLAN · 7.2</p>
+      </li>
+      <li class="todo">
+        <span class="id">i3</span>
+        <span class="title">Effects made of delay</span>
+        <p class="gist">Chorus, flanger, phaser, echo and reverb are all one idea wearing five hats.</p>
+        <p class="covers">PLAN · 7.5–7.9</p>
+      </li>
+      <li class="todo">
+        <span class="id">i4</span>
+        <span class="title">Shaping level and spectrum</span>
+        <p class="gist">Distortion, compression, EQ — and how you test something whose output is a matter of taste.</p>
+        <p class="covers">PLAN · 7.3, 7.4, 7.10–7.12</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART J ============================== -->
+  <section class="part p-j">
+    <h2>Part J · The modulation matrix <span class="phase">Phase 8</span></h2>
+    <p class="gist">Wiring anything to anything, six rows at a time, without a patch cable in sight.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">j1</span>
+        <span class="title">The matrix</span>
+        <p class="gist">Sources, destinations and depth — plus the trick that makes a depth of 100% always sound musical.</p>
+        <p class="covers">PLAN · 8.1–8.4</p>
+      </li>
+      <li class="todo">
+        <span class="id">j2</span>
+        <span class="title">Modulation across voices</span>
+        <p class="gist">Letting six parallel synths modulate each other without a single lock.</p>
+        <p class="covers">PLAN · 8.5–8.7</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART K ============================== -->
+  <section class="part p-k">
+    <h2>Part K · The sequencer <span class="phase">Phase 9</span></h2>
+    <p class="gist">The only thing that plays notes here: no keyboard, by design.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">k1</span>
+        <span class="title">Musical time</span>
+        <p class="gist">Tempo, ticks, and why timing that is nearly right is audibly wrong.</p>
+        <p class="covers">PLAN · 9.1, 9.3, 9.5</p>
+      </li>
+      <li class="todo">
+        <span class="id">k2</span>
+        <span class="title">Euclidean rhythms</span>
+        <p class="gist">One algorithm for spreading hits evenly turns out to generate the world's traditional rhythms.</p>
+        <p class="covers">PLAN · 9.2, 9.4, 9.6–9.9</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART L ============================== -->
+  <section class="part p-l">
+    <h2>Part L · The interface <span class="phase">Phases 10–12</span></h2>
+    <p class="gist">A 1080×1920 touchscreen, twelve endless knobs, and no mouse anywhere.</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">l1</span>
+        <span class="title">Painting at 60 frames a second</span>
+        <p class="gist">Colours, fonts, the GPU renderer, and one transform that scales the entire design.</p>
+        <p class="covers">PLAN · 10.1–10.4</p>
+      </li>
+      <li class="todo">
+        <span class="id">l2</span>
+        <span class="title">The building blocks of the panel</span>
+        <p class="gist">Navigation, the module frame, and the readouts that tell you what each knob does right now.</p>
+        <p class="covers">PLAN · 10.5–10.9</p>
+      </li>
+      <li class="todo">
+        <span class="id">l3</span>
+        <span class="title">Twelve real encoders</span>
+        <p class="gist">MIDI in, an event hub, and binding a physical knob to whatever the current page says it controls.</p>
+        <p class="covers">PLAN · 10.10–10.13</p>
+      </li>
+      <li class="todo">
+        <span class="id">l4</span>
+        <span class="title">Pages and displays</span>
+        <p class="gist">Drawing a wavetable in 3D, a filter's response curve, and an envelope you can drag.</p>
+        <p class="covers">PLAN · 11.1–11.12</p>
+      </li>
+      <li class="todo">
+        <span class="id">l5</span>
+        <span class="title">The sequencer section</span>
+        <p class="gist">Step grids, chord entry, the cross-voice matrix, and a playhead that keeps time with the audio.</p>
+        <p class="covers">PLAN · 12.1–12.5</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================== PART M ============================== -->
+  <section class="part p-m">
+    <h2>Part M · Making it real <span class="phase">Phase 13</span></h2>
+    <p class="gist">The difference between "it works" and "it is an instrument".</p>
+    <ol class="lessons">
+      <li class="todo">
+        <span class="id">m1</span>
+        <span class="title">Randomiser, stress and hardening</span>
+        <p class="gist">Ten minutes at full load, a fuzz test for silence, and a guard that catches the one forbidden mistake.</p>
+        <p class="covers">PLAN · 13.1–13.5</p>
+      </li>
+      <li class="todo">
+        <span class="id">m2</span>
+        <span class="title">Shipping to the tablet</span>
+        <p class="gist">Fullscreen on a second display, real low-latency drivers, and writing down what was left out.</p>
+        <p class="covers">PLAN · 13.6–13.9</p>
+      </li>
+    </ol>
+  </section>
+
+  <footer class="plan-link">
+    41 lessons · shadowing digi-synth0001/PLAN.md · greyed-out titles are not written yet
+  </footer>
+
+</main>
+</body>
+</html>

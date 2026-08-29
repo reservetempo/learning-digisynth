@@ -1,0 +1,291 @@
+/* learning-digisynth — the whole design system.
+   Colours are the Vital palette recorded in digi-synth0001/docs/ARCHITECTURE.md
+   § Vital colour map, so the site looks like the instrument it describes.
+   Dark theme only, deliberately: every colour is painted explicitly. */
+
+:root {
+  /* surfaces */
+  --bg:        #262a2d;
+  --card:      #2c3033;
+  --deep:      #1d2125;
+  --deeper:    #14181b;
+  --rule:      #4c4f52;
+  --heading-bg:#3e4245;
+
+  /* text */
+  --text:      #d3d6d6;
+  --head:      #dfdfdf;
+  --muted:     #8b9094;
+
+  /* the accent of the current part — every .p-* class below overrides this */
+  --accent:    #dfdfdf;
+
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
+
+  --col: 74ch;
+}
+
+/* Part accents. Put the class on <body> (a lesson) or on a .part (the index). */
+.p-a { --accent:#dfdfdf; }  /* Orientation             */
+.p-b { --accent:#8fa0ff; }  /* Phase 0   skeleton      */
+.p-c { --accent:#40c4ff; }  /* Phase 1   primitives    */
+.p-d { --accent:#1de9b6; }  /* Phase 2   parameters    */
+.p-e { --accent:#64ffda; }  /* Phase 3   engine        */
+.p-f { --accent:#ffd740; }  /* Phase 4   notes         */
+.p-g { --accent:#aa88ff; }  /* Phase 5   oscillators   */
+.p-h { --accent:#ffb74d; }  /* Phase 6   filters       */
+.p-i { --accent:#ff5252; }  /* Phase 7   effects       */
+.p-j { --accent:#ff99e9; }  /* Phase 8   matrix        */
+.p-k { --accent:#fff6e1; }  /* Phase 9   sequencer     */
+.p-l { --accent:#ff8180; }  /* Phase 10-12 interface   */
+.p-m { --accent:#d3d6d6; }  /* Phase 13  shipping      */
+
+/* ---------- base ---------- */
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.wrap {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 20px 96px;
+}
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+h1, h2, h3 { color: var(--head); line-height: 1.25; font-weight: 600; }
+h1 { font-size: 2.05rem; margin: 0 0 .4rem; letter-spacing: -.01em; }
+h2 { font-size: 1.32rem; margin: 2.6rem 0 .8rem; }
+h3 { font-size: 1.06rem; margin: 1.8rem 0 .5rem; }
+
+p { margin: 0 0 1.05rem; }
+ul, ol { padding-left: 1.3rem; }
+li { margin: .35rem 0; }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+strong { color: var(--head); }
+em { color: var(--head); font-style: italic; }
+
+code {
+  font-family: var(--mono);
+  font-size: .875em;
+  background: var(--deep);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: .08em .34em;
+}
+
+/* ---------- top bar ---------- */
+
+.topbar {
+  border-bottom: 1px solid var(--rule);
+  background: var(--deep);
+  margin-bottom: 2.2rem;
+}
+.topbar .wrap {
+  padding-top: 14px; padding-bottom: 14px;
+  display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: baseline;
+}
+.topbar .brand { font-weight: 600; color: var(--head); text-decoration: none; letter-spacing: .01em; }
+.topbar .brand span { color: var(--muted); font-weight: 400; }
+.topbar nav { margin-left: auto; display: flex; gap: 18px; font-size: .92rem; }
+.topbar nav a { color: var(--muted); text-decoration: none; }
+.topbar nav a:hover, .topbar nav a[aria-current] { color: var(--head); }
+
+/* ---------- lesson header ---------- */
+
+.lesson-head {
+  border-left: 3px solid var(--accent);
+  padding-left: 18px;
+  margin: 0 0 2.2rem;
+}
+.lesson-head .part {
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--accent); margin: 0 0 .5rem; font-weight: 600;
+}
+.lesson-head .steps {
+  color: var(--muted); font-size: .88rem; margin: .5rem 0 0; font-family: var(--mono);
+}
+
+.badge {
+  display: inline-block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+  border-radius: 3px; padding: .18em .5em; vertical-align: .18em; font-weight: 600;
+  border: 1px solid currentColor;
+}
+.status-built   { color: #1de9b6; }
+.status-planned { color: var(--muted); }
+
+/* ---------- callout blocks ---------- */
+
+.plain, .arch-note, .cpp-note {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 5px;
+  padding: 16px 18px 4px;
+  margin: 1.6rem 0;
+}
+.plain { font-size: 1.08rem; }
+
+.label {
+  display: block; font-size: .74rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--muted); font-weight: 600; margin-bottom: .5rem;
+}
+.arch-note .label { color: #64ffda; }
+.cpp-note  .label { color: #ffb74d; }
+
+/* ---------- vocabulary table ---------- */
+
+.vocab { width: 100%; border-collapse: collapse; margin: 1.4rem 0; font-size: .95rem; }
+.vocab th {
+  text-align: left; color: var(--muted); font-weight: 600; font-size: .78rem;
+  text-transform: uppercase; letter-spacing: .1em; padding: 0 12px .5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.vocab td { padding: .6rem 12px .6rem 0; border-bottom: 1px solid var(--deep); vertical-align: top; }
+.vocab td:first-child { color: var(--head); font-weight: 600; }
+
+/* ---------- jargon → glossary ---------- */
+
+.jargon {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent);
+}
+.jargon:hover { color: var(--accent); border-bottom-style: solid; }
+
+/* ---------- code ---------- */
+
+.snippet { margin: 1.6rem 0; }
+.snippet figcaption {
+  font-family: var(--mono); font-size: .78rem; color: var(--muted);
+  background: var(--heading-bg); border: 1px solid var(--rule); border-bottom: 0;
+  border-radius: 5px 5px 0 0; padding: .45rem 12px;
+}
+.snippet figcaption .real   { color: #1de9b6; }
+.snippet figcaption .notyet { color: #ffb74d; }
+.snippet figcaption + pre { margin-top: 0; border-radius: 0 0 5px 5px; }
+
+pre {
+  background: var(--deeper);
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: .84rem;
+  line-height: 1.55;
+  margin: 1.4rem 0;
+}
+pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+
+/* hand-marked highlighting — no library, seven rules */
+.k { color: #ff99e9; }                      /* keyword           */
+.t { color: #8fa0ff; }                      /* type / class name */
+.c { color: #7d8386; font-style: italic; }  /* comment           */
+.s { color: #ffd740; }                      /* string            */
+.f { color: #64ffda; }                      /* function name     */
+.n { color: #aa88ff; }                      /* number            */
+.pp { color: var(--muted); }                /* preprocessor      */
+
+/* ---------- diagrams ---------- */
+
+figure.diagram { margin: 2rem 0; }
+figure.diagram svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+figure.diagram figcaption { color: var(--muted); font-size: .86rem; margin-top: .7rem; }
+
+/* ---------- further reading ---------- */
+
+.deeper { list-style: none; padding: 0; }
+.deeper li { margin: .9rem 0; padding-left: 18px; border-left: 2px solid var(--rule); }
+.deeper li:hover { border-left-color: var(--accent); }
+.deeper .why { display: block; color: var(--muted); font-size: .92rem; }
+
+/* ---------- check yourself ---------- */
+
+.check details {
+  background: var(--card); border: 1px solid var(--rule); border-radius: 5px;
+  padding: .8rem 14px; margin: .6rem 0;
+}
+.check summary { cursor: pointer; color: var(--head); font-weight: 500; }
+.check details[open] summary {
+  margin-bottom: .7rem; border-bottom: 1px solid var(--rule); padding-bottom: .6rem;
+}
+.check p { margin: 0; font-size: .96rem; }
+
+/* ---------- pager ---------- */
+
+.pager {
+  display: flex; gap: 14px; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--rule); margin-top: 3rem; padding-top: 1.2rem; font-size: .93rem;
+}
+.pager a { text-decoration: none; color: var(--muted); }
+.pager a:hover { color: var(--accent); }
+
+footer.plan-link {
+  margin-top: 2.4rem; color: var(--muted); font-size: .84rem; font-family: var(--mono);
+}
+
+/* ---------- index page ---------- */
+
+.intro { font-size: 1.1rem; }
+
+.part { margin: 2.6rem 0 0; }
+.part > h2 {
+  border-left: 3px solid var(--accent); padding-left: 14px; margin-bottom: .3rem;
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline;
+}
+.part > h2 .phase {
+  font-size: .74rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); font-weight: 500; font-family: var(--mono);
+}
+.part > p.gist { padding-left: 17px; color: var(--muted); margin: 0 0 .8rem; font-size: .95rem; }
+
+ol.lessons { list-style: none; padding: 0 0 0 17px; margin: 0; }
+ol.lessons > li {
+  margin: 0; padding: .55rem 0;
+  border-top: 1px solid var(--deep);
+  display: grid; grid-template-columns: 3.2rem 1fr; gap: 3px 10px; align-items: baseline;
+}
+ol.lessons > li:last-child { border-bottom: 1px solid var(--deep); }
+ol.lessons .id { font-family: var(--mono); font-size: .82rem; color: var(--accent); }
+ol.lessons .title { color: var(--head); font-weight: 500; }
+ol.lessons a.title { text-decoration: none; }
+ol.lessons a.title:hover { text-decoration: underline; }
+ol.lessons .todo .title { color: var(--muted); font-weight: 400; }
+ol.lessons .gist { grid-column: 2; color: var(--muted); font-size: .9rem; margin: 0; }
+ol.lessons .covers {
+  grid-column: 2; font-family: var(--mono); font-size: .76rem; color: #5f6467; margin: .15rem 0 0;
+}
+
+/* ---------- glossary ---------- */
+
+.gloss { margin: 0; }
+.gloss dt {
+  color: var(--head); font-weight: 600; margin-top: 1.5rem; scroll-margin-top: 20px;
+  border-left: 3px solid var(--accent); padding-left: 12px;
+}
+.gloss dd { margin: .35rem 0 0 15px; }
+.gloss dd .seen { display: block; color: var(--muted); font-size: .86rem; margin-top: .25rem; }
+.alphabet { font-family: var(--mono); color: var(--muted); word-spacing: .4em; margin: 1.5rem 0 2.5rem; }
+.alphabet a { text-decoration: none; }
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 620px) {
+  body { font-size: 16px; }
+  h1 { font-size: 1.6rem; }
+  .wrap { padding: 0 14px 64px; }
+  .topbar nav { margin-left: 0; width: 100%; }
+  ol.lessons > li { grid-template-columns: 2.6rem 1fr; }
+}

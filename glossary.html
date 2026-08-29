@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossary — learning digisynth</title>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body class="p-c">
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">learning <span>digisynth</span></a>
+    <nav>
+      <a href="index.html">Contents</a>
+      <a href="glossary.html" aria-current="page">Glossary</a>
+      <a href="further-reading.html">Further reading</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <h1>Glossary</h1>
+
+  <p class="intro">
+    Every alien word, in one place, defined without using three more alien words to do it.
+    Lessons link here on a term's first appearance. The list grows as lessons are written —
+    an entry marked <em>“introduced in …”</em> without a link means that lesson is not written yet.
+  </p>
+
+  <p class="alphabet">
+    <a href="#letter-a">A</a> <a href="#letter-b">B</a> <a href="#letter-c">C</a>
+    <a href="#letter-d">D</a> <a href="#letter-e">E</a> <a href="#letter-f">F</a>
+    <a href="#letter-h">H</a> <a href="#letter-j">J</a> <a href="#letter-l">L</a>
+    <a href="#letter-m">M</a> <a href="#letter-n">N</a> <a href="#letter-o">O</a>
+    <a href="#letter-p">P</a> <a href="#letter-r">R</a> <a href="#letter-s">S</a>
+    <a href="#letter-t">T</a> <a href="#letter-u">U</a> <a href="#letter-v">V</a>
+    <a href="#letter-w">W</a> <a href="#letter-x">X</a>
+  </p>
+
+  <h2 id="letter-a">A</h2>
+  <dl class="gloss">
+    <dt id="aliasing">aliasing</dt>
+    <dd>What happens when a sound contains a frequency too high for the current
+      <a href="#sample-rate">sample rate</a> to represent. Rather than disappearing, it folds back
+      down and reappears as a lower frequency that has nothing to do with the note being played —
+      an unmusical whistle that moves the wrong way as you play up the keyboard.
+      <span class="seen">Introduced in g2 · Wavetables, aliasing and mipmaps</span></dd>
+
+    <dt id="atomic">atomic</dt>
+    <dd>A variable that two threads may touch at the same time without the result being nonsense.
+      Ordinary variables give no such promise: one thread can catch another mid-write and read half
+      of an old value and half of a new one. <span class="seen">Introduced in c6 · Handing work between threads</span></dd>
+
+    <dt id="avx2">AVX2</dt>
+    <dd>A set of CPU instructions that work on eight numbers at once instead of one. This project's
+      target CPU has it; the fallback for CPUs that do not is called SSE2, which does four at a time.
+      See <a href="#simd">SIMD</a>. <span class="seen">Introduced in c2 · Eight notes at once</span></dd>
+  </dl>
+
+  <h2 id="letter-b">B</h2>
+  <dl class="gloss">
+    <dt id="band-limiting">band-limiting</dt>
+    <dd>Deliberately removing the frequencies from a sound that are too high to be reproduced
+      correctly, <em>before</em> they get a chance to cause <a href="#aliasing">aliasing</a>.
+      <span class="seen">Introduced in g2 · Wavetables, aliasing and mipmaps</span></dd>
+
+    <dt id="barrier">barrier</dt>
+    <dd>A meeting point in code: several threads each do their own work, then wait at the barrier
+      until the slowest one arrives, and only then does anything continue. This project uses one to
+      join its six voices back together at the end of every audio
+      <a href="#block">block</a>. <span class="seen">Introduced in c7 · Six cores, one block</span></dd>
+
+    <dt id="block">block</dt>
+    <dd>A batch of audio <a href="#frame">frames</a> computed in one go. Sound is not produced one
+      sample at a time — that would be far too much overhead — but in blocks of, here, at most 128.
+      Also called a buffer. <span class="seen">Introduced in e1 · The audio callback</span></dd>
+
+    <dt id="buffer">buffer</dt>
+    <dd>A block of memory holding audio waiting to be played or processed. Bigger buffers are safer
+      (more time to compute) and worse (more <a href="#latency">latency</a>). Choosing the size is
+      the central trade-off of real-time audio. <span class="seen">Introduced in e1 · The audio callback</span></dd>
+  </dl>
+
+  <h2 id="letter-c">C</h2>
+  <dl class="gloss">
+    <dt id="cache-line">cache line</dt>
+    <dd>The smallest chunk of memory a CPU actually fetches — 64 bytes on this machine. You never
+      load one byte; you load the line it lives in. This is why two unrelated variables that happen
+      to sit next to each other can slow each other down. See <a href="#false-sharing">false sharing</a>.
+      <span class="seen">Introduced in d3 · Storing and shaping a value</span></dd>
+
+    <dt id="callback">callback</dt>
+    <dd>A function you write but do not call. You hand it to something else — here, the sound card's
+      driver — and it calls you, on its own schedule, when it needs something. The audio callback is
+      the heartbeat of the whole instrument.
+      <span class="seen">Introduced in e1 · The audio callback</span></dd>
+
+    <dt id="constexpr">constexpr</dt>
+    <dd>A C++ keyword meaning "work this out while compiling, not while running". A
+      <code>constexpr</code> table costs nothing at run time because it is already baked into the
+      program. <span class="seen">Introduced in c1 · Constants and compile-time checks</span></dd>
+
+    <dt id="cutoff">cutoff</dt>
+    <dd>The frequency where a <a href="#filter">filter</a> starts doing its job — below it (for a
+      low-pass) sound passes through, above it sound is progressively removed. Sweeping the cutoff
+      is the single most recognisable gesture in electronic music.
+      <span class="seen">Introduced in h1 · What a filter is</span></dd>
+  </dl>
+
+  <h2 id="letter-d">D</h2>
+  <dl class="gloss">
+    <dt id="denormal">denormal</dt>
+    <dd>A floating-point number so close to zero that the CPU has to use a slow, special
+      representation for it. Audio produces them constantly — every fading reverb tail decays into
+      denormal territory — and on some processors they cost a hundred times more than ordinary
+      arithmetic. <span class="seen">Introduced in c5 · Tiny numbers, big stalls</span></dd>
+
+    <dt id="dsp">DSP</dt>
+    <dd>Digital Signal Processing. The umbrella term for doing arithmetic on sound: filtering,
+      distorting, delaying, analysing. <span class="seen">Introduced in a1 · What we are actually building</span></dd>
+  </dl>
+
+  <h2 id="letter-e">E</h2>
+  <dl class="gloss">
+    <dt id="envelope">envelope</dt>
+    <dd>A shape over time that a note follows — typically how it swells when struck and how it fades
+      when released. The classic one is ADSR (attack, decay, sustain, release); this project uses a
+      six-stage version. <span class="seen">Introduced in h3 · Things that move by themselves</span></dd>
+
+    <dt id="euclidean-rhythm">Euclidean rhythm</dt>
+    <dd>A rhythm made by spreading a number of hits as evenly as possible over a number of steps —
+      5 hits in 8 steps, say. The algorithm that does it is Euclid's, and it happens to produce a
+      startling number of the world's traditional rhythms.
+      <span class="seen">Introduced in k2 · Euclidean rhythms</span></dd>
+  </dl>
+
+  <h2 id="letter-f">F</h2>
+  <dl class="gloss">
+    <dt id="false-sharing">false sharing</dt>
+    <dd>Two threads writing to two different variables, and slowing each other down anyway, because
+      those variables share a <a href="#cache-line">cache line</a>. The fix is to pad them apart.
+      <span class="seen">Introduced in d3 · Storing and shaping a value</span></dd>
+
+    <dt id="fft">FFT</dt>
+    <dd>Fast Fourier Transform: the algorithm that takes a slice of sound and tells you which
+      frequencies it is made of. The reverse turns a list of frequencies back into sound.
+      <span class="seen">Introduced in g1 · What a spectrum is</span></dd>
+
+    <dt id="filter">filter</dt>
+    <dd>Anything that makes a sound duller, brighter or more nasal by turning some frequencies down
+      and leaving others alone. See <a href="#cutoff">cutoff</a> and <a href="#resonance">resonance</a>.
+      <span class="seen">Introduced in h1 · What a filter is</span></dd>
+
+    <dt id="frame">frame</dt>
+    <dd>One instant of sound: one number per channel. At 48&nbsp;kHz there are 48,000 frames per
+      second. Casually called a "sample", though strictly a sample is one number and a stereo frame
+      contains two. <span class="seen">Introduced in e1 · The audio callback</span></dd>
+
+    <dt id="fx">FX</dt>
+    <dd>Effects. Anything that processes sound after it has been generated — distortion, delay,
+      reverb, chorus. Each voice here has twelve slots and any effect can go in any slot.
+      <span class="seen">Introduced in a1 · What we are actually building</span></dd>
+  </dl>
+
+  <h2 id="letter-h">H</h2>
+  <dl class="gloss">
+    <dt id="harmonic">harmonic</dt>
+    <dd>One of the simple pure tones a real sound is built from. A note at 100&nbsp;Hz typically also
+      contains energy at 200, 300, 400&nbsp;Hz and so on; the recipe of harmonics is what makes a
+      violin sound unlike a flute. <span class="seen">Introduced in g1 · What a spectrum is</span></dd>
+
+    <dt id="header">header</dt>
+    <dd>A C++ file, usually ending <code>.h</code>, containing declarations that other files paste
+      into themselves with <code>#include</code>. Crucially, a header that nothing includes is never
+      compiled at all. <span class="seen">Introduced in c1 · Constants and compile-time checks</span></dd>
+  </dl>
+
+  <h2 id="letter-j">J</h2>
+  <dl class="gloss">
+    <dt id="juce">JUCE</dt>
+    <dd>The C++ framework this instrument is built on. It supplies the window, the drawing, the
+      sound-card plumbing and the MIDI handling, so the project can spend its effort on the synth
+      itself rather than on talking to Windows.
+      <span class="seen">Introduced in b1 · From text to a running program</span></dd>
+  </dl>
+
+  <h2 id="letter-l">L</h2>
+  <dl class="gloss">
+    <dt id="lane">lane</dt>
+    <dd>One of the slots in a <a href="#simd">SIMD</a> register. This project puts one note in each
+      lane, so eight notes are computed by the same instruction at the same time.
+      <span class="seen">Introduced in c2 · Eight notes at once</span></dd>
+
+    <dt id="latency">latency</dt>
+    <dd>The delay between something happening and you hearing it. Below roughly 10&nbsp;ms it feels
+      instant; above that an instrument starts to feel unresponsive.
+      <span class="seen">Introduced in e1 · The audio callback</span></dd>
+
+    <dt id="lfo">LFO</dt>
+    <dd>Low Frequency Oscillator. A wave too slow to hear as a pitch, used instead as a control —
+      wobbling a filter, panning a sound side to side, adding vibrato.
+      <span class="seen">Introduced in h3 · Things that move by themselves</span></dd>
+
+    <dt id="lock-free">lock-free</dt>
+    <dd>Code that lets threads share data without any of them ever being made to wait. It matters
+      here because the audio thread cannot afford to wait for anything, ever.
+      <span class="seen">Introduced in c6 · Handing work between threads</span></dd>
+  </dl>
+
+  <h2 id="letter-m">M</h2>
+  <dl class="gloss">
+    <dt id="mask">mask</dt>
+    <dd>A set of yes/no flags, one per <a href="#lane">lane</a>, used to apply a decision to some
+      lanes and not others — the <a href="#simd">SIMD</a> replacement for <code>if</code>.
+      <span class="seen">Introduced in c4 · Code without branches</span></dd>
+
+    <dt id="memory-ordering">memory ordering</dt>
+    <dd>The rules describing what one thread is guaranteed to see of another thread's writes, and in
+      what order. Modern CPUs and compilers reorder work aggressively, so without these rules
+      "I wrote A then B" does not mean anyone else observes A then B.
+      <span class="seen">Introduced in c6 · Handing work between threads</span></dd>
+
+    <dt id="midi">MIDI</dt>
+    <dd>The decades-old messaging standard musical hardware speaks. Here it carries only knob
+      movements from the custom controller — no notes, because the
+      <a href="#sequencer">sequencer</a> plays everything.
+      <span class="seen">Introduced in l3 · Twelve real encoders</span></dd>
+
+    <dt id="mipmap">mipmap</dt>
+    <dd>Borrowed from 3D graphics: keeping several progressively blurrier copies of something and
+      picking the right one for the situation. Here the copies are versions of a waveform with
+      progressively fewer <a href="#harmonic">harmonics</a>, used to avoid
+      <a href="#aliasing">aliasing</a> on high notes.
+      <span class="seen">Introduced in g2 · Wavetables, aliasing and mipmaps</span></dd>
+
+    <dt id="modulation">modulation</dt>
+    <dd>Letting one thing control another automatically — an <a href="#envelope">envelope</a> opening
+      a <a href="#filter">filter</a>, an <a href="#lfo">LFO</a> wobbling a pitch. Modulation is what
+      separates a synthesizer from an organ.
+      <span class="seen">Introduced in h3 · Things that move by themselves</span></dd>
+
+    <dt id="mod-matrix">modulation matrix</dt>
+    <dd>A grid for wiring any <a href="#modulation">modulation</a> source to any destination, with a
+      depth for each connection — the software version of a patch bay.
+      <span class="seen">Introduced in j1 · The matrix</span></dd>
+
+    <dt id="mutation-testing">mutation testing</dt>
+    <dd>Deliberately introducing a bug into working code to check that the test suite notices. A test
+      that still passes was never testing anything.
+      <span class="seen">Introduced in c3 · Three engines behind one name</span></dd>
+  </dl>
+
+  <h2 id="letter-n">N</h2>
+  <dl class="gloss">
+    <dt id="nyquist">Nyquist frequency</dt>
+    <dd>Half the <a href="#sample-rate">sample rate</a> — the highest frequency a digital system can
+      represent. At 48&nbsp;kHz that is 24&nbsp;kHz. Anything above it comes back as
+      <a href="#aliasing">aliasing</a>. <span class="seen">Introduced in g2 · Wavetables, aliasing and mipmaps</span></dd>
+  </dl>
+
+  <h2 id="letter-o">O</h2>
+  <dl class="gloss">
+    <dt id="oracle-test">oracle test</dt>
+    <dd>A test that checks a fast, clever implementation against a slow, obvious one that is easy to
+      believe. The slow version is the oracle; if they ever disagree, the clever one is wrong.
+      <span class="seen">Introduced in c3 · Three engines behind one name</span></dd>
+
+    <dt id="oscillator">oscillator</dt>
+    <dd>The part that actually makes a tone — the vibrating thing. Everything else in a synthesizer
+      shapes what the oscillators produce.
+      <span class="seen">Introduced in a1 · What we are actually building</span></dd>
+  </dl>
+
+  <h2 id="letter-p">P</h2>
+  <dl class="gloss">
+    <dt id="polyphony">polyphony</dt>
+    <dd>How many notes can sound at once. Each of this instrument's six synths is polyphonic,
+      handling up to 16 simultaneous notes.
+      <span class="seen">Introduced in a1 · What we are actually building</span></dd>
+  </dl>
+
+  <h2 id="letter-r">R</h2>
+  <dl class="gloss">
+    <dt id="raii">RAII</dt>
+    <dd>Resource Acquisition Is Initialisation — an ugly name for a beautiful idea. Tie cleanup to a
+      variable going out of scope, and the cleanup can never be forgotten, not even when something
+      goes wrong halfway through. <span class="seen">Introduced in c5 · Tiny numbers, big stalls</span></dd>
+
+    <dt id="rcu">RCU</dt>
+    <dd>Read-Copy-Update. Instead of editing a shared structure while others read it, you build a
+      complete new one off to the side and swap the pointer in one indivisible step. Readers never
+      wait and never see a half-finished state.
+      <span class="seen">Introduced in c6 · Handing work between threads</span></dd>
+
+    <dt id="real-time">real-time</dt>
+    <dd>Not "fast" — <em>on time</em>. A real-time deadline that is missed is a failure even if the
+      answer was correct, because in audio a late result is a click you can hear.
+      <span class="seen">Introduced in e1 · The audio callback</span></dd>
+
+    <dt id="resonance">resonance</dt>
+    <dd>A <a href="#filter">filter</a> control that emphasises the frequencies right at the
+      <a href="#cutoff">cutoff</a>, giving the characteristic vocal or squelchy quality. Turned high
+      enough, a filter will ring on its own.
+      <span class="seen">Introduced in h1 · What a filter is</span></dd>
+  </dl>
+
+  <h2 id="letter-s">S</h2>
+  <dl class="gloss">
+    <dt id="sample-rate">sample rate</dt>
+    <dd>How many times a second the sound is measured. CDs use 44,100; this project defaults to
+      48,000. It sets the ceiling on what frequencies can exist — see <a href="#nyquist">Nyquist</a>.
+      <span class="seen">Introduced in e1 · The audio callback</span></dd>
+
+    <dt id="sequencer">sequencer</dt>
+    <dd>The part that decides which notes play when. Here it is the <em>only</em> source of notes:
+      there is no keyboard input at all, by deliberate decision.
+      <span class="seen">Introduced in a1 · What we are actually building</span></dd>
+
+    <dt id="simd">SIMD</dt>
+    <dd>Single Instruction, Multiple Data. One CPU instruction that does the same arithmetic to
+      several numbers simultaneously. Eight at a time here — see <a href="#avx2">AVX2</a> and
+      <a href="#lane">lane</a>. <span class="seen">Introduced in c2 · Eight notes at once</span></dd>
+
+    <dt id="static-assert">static_assert</dt>
+    <dd>A check the compiler performs. If it fails, the program does not build — which is far better
+      than a program that builds and then misbehaves at 3am.
+      <span class="seen">Introduced in c1 · Constants and compile-time checks</span></dd>
+  </dl>
+
+  <h2 id="letter-t">T</h2>
+  <dl class="gloss">
+    <dt id="translation-unit">translation unit</dt>
+    <dd>One <code>.cpp</code> file plus everything it includes — the actual unit the compiler chews
+      on. C++ compiles these one at a time and independently, which explains a great deal about how
+      the language behaves. <span class="seen">Introduced in c1 · Constants and compile-time checks</span></dd>
+  </dl>
+
+  <h2 id="letter-u">U</h2>
+  <dl class="gloss">
+    <dt id="unison">unison</dt>
+    <dd>Playing several slightly detuned copies of the same note at once, so they drift in and out of
+      phase with each other. It is why one synth patch can sound like a whole string section.
+      <span class="seen">Introduced in f2 · Glide, unison, and playing dynamics</span></dd>
+  </dl>
+
+  <h2 id="letter-v">V</h2>
+  <dl class="gloss">
+    <dt id="voice">voice</dt>
+    <dd>A word doing two jobs, unfortunately. In most synthesizers a voice is one sounding note. In
+      <em>this</em> project a "voice" is one of the six complete independent synthesizers — each of
+      which is itself <a href="#polyphony">polyphonic</a>. This site says "voice" for the big one and
+      "note" for the small one. <span class="seen">Introduced in a1 · What we are actually building</span></dd>
+  </dl>
+
+  <h2 id="letter-w">W</h2>
+  <dl class="gloss">
+    <dt id="wavetable">wavetable</dt>
+    <dd>A stored collection of waveform shapes that an <a href="#oscillator">oscillator</a> plays
+      through and can sweep between, so the timbre morphs continuously rather than being fixed.
+      <span class="seen">Introduced in g2 · Wavetables, aliasing and mipmaps</span></dd>
+  </dl>
+
+  <h2 id="letter-x">X</h2>
+  <dl class="gloss">
+    <dt id="xrun">xrun</dt>
+    <dd>The audio equivalent of missing a deadline: the sound card asked for the next
+      <a href="#block">block</a> and it was not ready. You hear it as a click, a pop or a stutter.
+      Counting xruns is how you know whether the instrument is really keeping up.
+      <span class="seen">Introduced in e1 · The audio callback</span></dd>
+  </dl>
+
+  <footer class="plan-link">
+    Grows one lesson at a time · every jargon link in a lesson must land on an entry here
+  </footer>
+
+</main>
+</body>
+</html>
